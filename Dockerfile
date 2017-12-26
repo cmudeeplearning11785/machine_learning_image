@@ -13,21 +13,22 @@ RUN apt-get install -y gcc
 RUN apt-get install -y make
 RUN apt-get install -y build-essential
 RUN apt-get update && apt-get install -y \
-  gfortran \
+  # gfortran \
   git \
-  wget \
-  curl \
+  # wget \
+  # curl \
+  # cmake \
   pkg-config \
   python3 \
-  python3-dev \
-  liblapack-dev \
-  libopenblas-dev \
+  # python3-dev \
+  # liblapack-dev \
+  # libopenblas-dev \
   rsync \
   software-properties-common \
   unzip \
-  libfreetype6-dev \
-  libpng12-dev \
-  libzmq3-dev \
+  # libfreetype6-dev \
+  # libpng12-dev \
+  # libzmq3-dev \
   python3-pip \
   python3-nose \
   python3-numpy \
@@ -37,10 +38,10 @@ RUN pip3 install --upgrade six
 RUN pip3 install pyOpenSSL ndg-httpsclient pyasn1
 
 # cmake
-WORKDIR /tmp
-RUN wget http://www.cmake.org/files/v3.10/cmake-3.10.0.tar.gz
-RUN tar xf cmake-3.10.0.tar.gz
-RUN cd cmake-3.10.0 && ./configure && make && make install
+# WORKDIR /tmp
+# RUN wget http://www.cmake.org/files/v3.10/cmake-3.10.0.tar.gz
+# RUN tar xf cmake-3.10.0.tar.gz
+# RUN cd cmake-3.10.0 && ./configure && make && make install
 
 # Tensorflow
 RUN pip3 install \
@@ -49,6 +50,8 @@ RUN pip3 install \
         ipykernel \
         jupyter \
         matplotlib \
+		scipy \
+		sympy \
         pandas \
         sklearn \
         && \
@@ -56,26 +59,36 @@ RUN pip3 install \
 RUN pip3 install tensorflow
 
 # Pytorch
-WORKDIR /tmp
-RUN pip3 install pyyaml mkl setuptools cmake cffi
-RUN git clone --recursive https://github.com/pytorch/pytorch.git && cd pytorch && python3 setup.py install
-RUN pip3 install --no-deps torchvision
-RUN rm -Rf pytorch
+# WORKDIR /tmp
+# RUN pip3 install pyyaml mkl setuptools cmake cffi
+# RUN git clone --recursive https://github.com/pytorch/pytorch.git && cd pytorch && python3 setup.py install
+# RUN pip3 install --no-deps torchvision
+# RUN rm -Rf pytorch
 # RUN git clone https://github.com/pytorch/vision.git && cd vision && pip install -v .
+RUN pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
+RUN pip3 install torchvision
+RUN pip3 install inferno-pytorch
 
 # Misc Python
 RUN pip3 install pytest nose nose-parameterized pytest-pep8 pytest-helpers-namespace
 RUN pip3 install h5py lmdb tqdm
 
 # Datasets
-RUN mkdir /data
-WORKDIR /data
-RUN wget https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz
-RUN tar xzf cifar-10-python.tar.gz
-RUN rm cifar-10-python.tar.gz
-ENV DATA_PATH=/data
-ENV CIFAR10_PATH=/data/cifar-10-batches-py
+# RUN mkdir /data
+# WORKDIR /data
+# RUN wget https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz
+# RUN tar xzf cifar-10-python.tar.gz
+# RUN rm cifar-10-python.tar.gz
+# ENV DATA_PATH=/data
+# ENV CIFAR10_PATH=/data/cifar-10-batches-py
 
 # Cleanup
+WORKDIR /home
+RUN apt-get remove -y git
+RUN apt-get remove -y wget curl cmake gfortran build-essential gcc make
 RUN apt-get clean
 RUN apt-get -y autoremove
+
+# Check installation
+RUN ls -l /home
+RUN which autodriver
