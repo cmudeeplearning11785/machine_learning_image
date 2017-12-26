@@ -85,7 +85,7 @@ RUN pip3 install h5py lmdb tqdm
 # Cleanup
 WORKDIR /home
 RUN apt-get remove -y git
-RUN apt-get remove -y wget curl cmake gfortran build-essential gcc make
+# RUN apt-get remove -y wget curl cmake gfortran build-essential gcc
 RUN apt-get clean
 RUN apt-get -y autoremove
 
