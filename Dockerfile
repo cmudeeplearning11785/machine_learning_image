@@ -68,6 +68,7 @@ RUN pip3 install tensorflow
 RUN pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
 RUN pip3 install torchvision
 RUN pip3 install inferno-pytorch
+RUN pip3 install git+https://github.com/pytorch/tnt.git@master
 
 # Misc Python
 RUN pip3 install pytest nose nose-parameterized pytest-pep8 pytest-helpers-namespace
